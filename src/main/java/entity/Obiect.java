@@ -29,12 +29,20 @@ public class Obiect {
 
     }
 
+    public Obiect() {
+        db = Main.db;
+    }
+
     public void addToDb() {
         if (db.insertValue(this)) {
             System.out.println("Obiectul a fost adaugat cu succes");
         } else {
             System.out.println("Obiectul nu a fost adaugat!");
         }
+    }
+
+    public boolean deleteObiect(int id_obiect) {
+        return db.deleteValue(Tables.Obiecte, "id_obiect", String.valueOf(id_obiect));
     }
 
     private int getLastId() {
@@ -65,5 +73,11 @@ public class Obiect {
         ArrayList<Obiect> obiecte = (ArrayList<Obiect>) db.selectAll(this);
 
         return obiecte;
+    }
+
+    @Override
+    public String toString() {
+        return "Id: " + id_obiect +
+                ", Nume obiect: " + nume_obiect;
     }
 }

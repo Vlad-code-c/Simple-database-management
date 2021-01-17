@@ -1,6 +1,7 @@
 package entity;
 
 import db.DatabaseHandler;
+import db.Tables;
 import main.Main;
 
 import java.util.ArrayList;
@@ -25,6 +26,16 @@ public class Grupa {
         }
     }
 
+
+    public boolean deleteGrupa(String nume_grupa) {
+        if (db.ifExistsElevInGroup(nume_grupa)) {
+            System.out.println("Exista cel putin un elev in grupa indicata.");
+            return false;
+        } else {
+            return db.deleteValue(Tables.Grupe, "nume_grupa", nume_grupa);
+        }
+    }
+
     public Grupa() {
         db = new DatabaseHandler();
     }
@@ -43,4 +54,8 @@ public class Grupa {
         return grupe;
     }
 
+    @Override
+    public String toString() {
+        return "Nume grupa: " + nume_grupa;
+    }
 }

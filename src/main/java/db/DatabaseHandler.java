@@ -145,7 +145,33 @@ public class DatabaseHandler {
         return false;
     }
 
+    /**
+     * Sterge o inregistrare din tabelul indicat
+     * @param tb tabelul din care urmeaza a fi sterse datele
+     * @param primaryKeyColumnName numele coloanei dupa care se va face referinta (cheia primara)
+     * @param primaryKeyReferenceValue valoarea coloanei dupa care se va face referinta
+     * */
+    public boolean deleteValue(Tables tb, String primaryKeyColumnName, String primaryKeyReferenceValue) {
+        String delete = "DELETE FROM " + tb.name() + " WHERE " + primaryKeyColumnName + " = ?;";
+        Connection con = getConnection();
 
+        try {
+            PreparedStatement prSt = con.prepareStatement(delete);
+            prSt.setString(1, primaryKeyReferenceValue);
+
+            int res = prSt.executeUpdate();
+
+
+            con.close();
+
+            return res != 0;
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return false;
+    }
 
     /**
      * Selecteaza o singura valoare pentru coloana si valoare cheii primare indicate, din tabel
@@ -276,5 +302,31 @@ public class DatabaseHandler {
         }
 
         return lastId;
+    }
+
+    /**
+     * Verifica daca exista cel putin un elev in grupa primita ca parametru
+     * */
+    public boolean ifExistsElevInGroup(String numeGrupa) {
+        Connection con = getConnection();
+        String check = "SELECT 1 FROM Elev WHERE id_grupa = ?";
+        boolean exists = false;
+
+        try {
+            PreparedStatement prSt = con.prepareStatement(check);
+            prSt.setString(1, numeGrupa);
+
+            ResultSet resSet = prSt.executeQuery();
+
+            if (resSet.next()) {
+                exists = true;
+            }
+
+            con.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return exists;
     }
 }

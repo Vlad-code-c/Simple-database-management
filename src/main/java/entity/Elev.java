@@ -28,6 +28,10 @@ public class Elev {
         db = Main.db;
     }
 
+    public Elev() {
+        db = Main.db;
+    }
+
     public void addToDb() {
         if (db.insertValue(this)) {
             System.out.println("Elevul a fost adaugat cu succes");
@@ -72,18 +76,18 @@ public class Elev {
     public ArrayList<Elev> getElevi() {
         ArrayList<Elev> elevi = (ArrayList<Elev>) db.selectAll(this);
 
-//        try {
-//            while (resSet.next()) {
-//                Elev elev = new Elev(resSet.getLong(1),
-//                                    resSet.getString(2),
-//                                    resSet.getString(3),
-//                                    resSet.getString(4));
-//                elevi.add(elev);
-//            }
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-
         return elevi;
+    }
+
+    public boolean deleteElev(long idnp) {
+        return db.deleteValue(Tables.Elev, "idnp_elev", String.valueOf(idnp));
+    }
+
+    @Override
+    public String toString() {
+        return "IDNP: " + idnp +
+                ", nume: " + nume +
+                ", prenume: " + prenume +
+                ", nume grupa: " + nume_grupa;
     }
 }
